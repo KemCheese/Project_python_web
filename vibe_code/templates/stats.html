@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Báo Cáo Thống Kê & Phân Tích Đồ Thị — Guestbook Chronicle{% endblock %}
+
+{% block content %}
+<div class="stats-dashboard-wrapper">
+  <!-- Masthead Header -->
+  <div class="stats-masthead">
+    <div class="stats-title-group">
+      <h1>Báo Cáo Phân Tích &amp; Thống Kê</h1>
+      <p>Tổng hợp chỉ số tương tác thời gian thực được kết xuất từ <code>data.json</code>.</p>
+    </div>
+
+    <div class="hero-actions-group">
+      <a href="{{ url_for('index') }}" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Về sổ lưu bút</span>
+      </a>
+      <a href="{{ url_for('stats') }}" class="btn btn-primary" title="Cập nhật lại số liệu và biểu đồ">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        <span>Làm mới biểu đồ</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 3 Thẻ Metric KPI Bento Row -->
+  <div class="kpi-bento-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </div>
+      <div class="kpi-info-block">
+        <span class="kpi-label">Tổng số lời nhắn</span>
+        <div class="kpi-metric-number">{{ total_entries }}</div>
+        <span class="kpi-caption">Được lưu trữ bền vững</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+      </div>
+      <div class="kpi-info-block">
+        <span class="kpi-label">Số tác giả ghé thăm</span>
+        <div class="kpi-metric-number">{{ unique_authors }}</div>
+        <span class="kpi-caption">Người gửi khác nhau</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="7"></circle>
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+        </svg>
+      </div>
+      <div class="kpi-info-block">
+        <span class="kpi-label">Đóng góp tích cực nhất</span>
+        <div class="kpi-metric-number" style="font-size: clamp(1.3rem, 1.8vw, 1.7rem);">{{ top_contributor }}</div>
+        <span class="kpi-caption">Dẫn đầu bảng xếp hạng</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Split: Leaderboard & Matplotlib Chart -->
+  <div class="analytics-bento-layout">
+    <!-- Cột Leaderboard Top 5 -->
+    <div class="bento-card">
+      <div class="bento-card-header">
+        <div class="bento-title-group">
+          <h3>Top 5 Người Gửi Nhiều Nhất</h3>
+          <p>Xếp hạng tần suất dựa trên họ tên người gửi</p>
+        </div>
+        <span class="bento-badge">BXH</span>
+      </div>
+
+      <div class="bento-card-body">
+        {% if top_senders %}
+          <div class="leaderboard-items-list">
+            {% for sender, count in top_senders %}
+              {% set rank = loop.index %}
+              <div class="leaderboard-row">
+                <div class="rank-marker {% if rank == 1 %}gold{% elif rank == 2 %}silver{% elif rank == 3 %}bronze{% endif %}">
+                  {% if rank == 1 %}1{% elif rank == 2 %}2{% elif rank == 3 %}3{% else %}{{ rank }}{% endif %}
+                </div>
+
+                <div class="leaderboard-author-col">
+                  <div class="leaderboard-header-line">
+                    <span class="leaderboard-name">{{ sender }}</span>
+                    <span class="leaderboard-count-pill">{{ count }} lời nhắn</span>
+                  </div>
+
+                  <!-- Thanh tỉ lệ trực quan -->
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: {{ (count / total_entries * 100)|round(1) }}%;"></div>
+                  </div>
+                </div>
+
+                <div class="leaderboard-percent">
+                  {{ (count / total_entries * 100)|round(1) }}%
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state-panel" style="padding: 2rem 1rem;">
+            <p>Chưa có dữ liệu tác giả để xếp hạng.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Cột Biểu Đồ Cột Matplotlib -->
+    <div class="bento-card">
+      <div class="bento-card-header">
+        <div class="bento-title-group">
+          <h3>Biểu Đồ Cột Matplotlib</h3>
+          <p>Tệp ảnh sinh tự động: <code>static/stats.png</code></p>
+        </div>
+        <span class="bento-badge">200 DPI</span>
+      </div>
+
+      <div class="bento-card-body">
+        <div class="chart-viewport-box">
+          <img src="{{ url_for('static', filename='stats.png') }}?v={{ total_entries }}" 
+               alt="Biểu đồ cột thống kê tần suất người gửi lời nhắn" 
+               class="chart-rendered-img"
+               id="chartImage">
+        </div>
+        <div class="chart-meta-caption">
+          <span>Khung nhìn tối ưu cho phân tích</span>
+          <span>Tự động cập nhật khi có lời nhắn mới</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

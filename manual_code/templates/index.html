@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Trang Chủ - Danh Sách Lời Nhắn{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-header">
+    <h1 class="card-title">Danh Sách Lời Nhắn</h1>
+    <a href="{{ url_for('add') }}" class="btn btn-primary">+ Thêm Lời Nhắn Mới</a>
+  </div>
+
+  {% if entries %}
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 8%;">ID</th>
+          <th style="width: 22%;">Người Gửi</th>
+          <th style="width: 42%;">Lời Nhắn</th>
+          <th style="width: 18%;">Thời Gian</th>
+          <th style="width: 10%; text-align: center;">Thao Tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+        <tr>
+          <td><strong>#{{ entry.id }}</strong></td>
+          <td class="author-name">{{ entry.name }}</td>
+          <td class="entry-message">{{ entry.message }}</td>
+          <td class="timestamp">{{ entry.created_at if entry.created_at else '---' }}</td>
+          <td style="text-align: center;">
+            <a href="{{ url_for('delete', id=entry.id) }}" class="btn btn-danger"
+              onclick="return confirm('Bạn có chắc chắn muốn xóa lời nhắn #{{ entry.id }} không?');">
+              Xóa
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <p>Hiện chưa có lời nhắn nào được lưu.</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="{{ url_for('add') }}" class="btn btn-primary">Hãy gửi lời nhắn đầu tiên ngay!</a>
+    </p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

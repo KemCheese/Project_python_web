@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Sổ Lưu Bút (Guestbook){% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <!-- Thanh điều hướng chính -->
+  <nav class="navbar">
+    <a href="{{ url_for('index') }}" class="brand">📖 Sổ Lưu Bút Python</a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('index') }}">Danh Sách Lời Nhắn</a></li>
+      <li><a href="{{ url_for('add') }}">+ Viết Lời Nhắn</a></li>
+      <li><a href="{{ url_for('stats') }}">📊 Thống Kê & Đồ Thị</a></li>
+    </ul>
+  </nav>
+
+  <!-- Khung nội dung trang -->
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Chân trang -->
+  <footer>
+    <p>Dự Án Lập Trình Web Python</p>
+  </footer>
+
+</body>
+
+</html>

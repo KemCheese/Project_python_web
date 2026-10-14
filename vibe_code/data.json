@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Nguyễn Minh Tuấn",
+    "message": "Ứng dụng web rất mượt mà và trực quan! Chúc nhóm đạt điểm tuyệt đối nhé.",
+    "created_at": "2026-10-14 08:30"
+  },
+  {
+    "id": 2,
+    "name": "Lê Thị Phương Thảo",
+    "message": "Giao diện được thiết kế rất tỉ mỉ, tone màu hiện đại và dễ nhìn.",
+    "created_at": "2026-10-14 09:15"
+  },
+  {
+    "id": 3,
+    "name": "Trần Hải Nam",
+    "message": "Chức năng thêm và xóa hoạt động rất chuẩn xác, chuyển hướng trang nhanh.",
+    "created_at": "2026-10-14 09:45"
+  },
+  {
+    "id": 4,
+    "name": "Nguyễn Minh Tuấn",
+    "message": "Ghé thăm lại lần thứ hai, phần thống kê đồ thị hiển thị rất rõ ràng!",
+    "created_at": "2026-10-14 10:10"
+  },
+  {
+    "id": 5,
+    "name": "Phạm Quốc Huy",
+    "message": "Một dự án Python Flask mẫu mực, code cấu trúc tách bạch dễ đọc hiểu.",
+    "created_at": "2026-10-14 10:25"
+  },
+  {
+    "id": 6,
+    "name": "Lê Thị Phương Thảo",
+    "message": "Đã thử nghiệm trên điện thoại, giao diện co giãn responsive rất tốt.",
+    "created_at": "2026-10-14 10:40"
+  },
+  {
+    "id": 7,
+    "name": "Hoàng Kim Ngân",
+    "message": "Xin chào mọi người! Rất ấn tượng với phần biểu đồ Matplotlib tự động sinh.",
+    "created_at": "2026-10-14 11:00"
+  },
+  {
+    "id": 8,
+    "name": "Nguyễn Minh Tuấn",
+    "message": "Gửi thêm lời nhắn thứ 3 để test bảng xếp hạng Top 5 người gửi nhiều nhất.",
+    "created_at": "2026-10-14 11:15"
+  },
+  {
+    "id": 9,
+    "name": "Le Minh Hoang",
+    "message": "Giao dien Vibe Code qua dep va muot ma!",
+    "created_at": "2026-10-14 11:39"
+  },
+  {
+    "id": 10,
+    "name": "Nguyễn  Minh Tuấn",
+    "message": "tuanancut",
+    "created_at": "2026-10-14 21:09"
+  }
+]

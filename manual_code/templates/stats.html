@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Thống Kê & Đồ Thị - Sổ Lưu Bút{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-header">
+    <h1 class="card-title">Báo Cáo Thống Kê & Biểu Đồ</h1>
+    <div>
+      <a href="{{ url_for('add') }}" class="btn btn-primary">+ Viết Lời Nhắn</a>
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">Về Trang Chủ</a>
+    </div>
+  </div>
+
+  <!-- Thống kê tổng số lời nhắn -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-label">Tổng Số Lời Nhắn Đã Ghi</div>
+      <div class="stat-value">{{ total_entries }}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Số Người Gửi Khác Nhau</div>
+      <div class="stat-value" style="color: #059669;">{{ top_senders|length }}</div>
+    </div>
+  </div>
+
+  <!-- Danh sách 5 người gửi nhiều lời nhắn nhất -->
+  <h2 style="font-size: 1.15rem; margin: 1.5rem 0 0.75rem; color: #1e293b;">
+    Top 5 Người Gửi Nhiều Lời Nhắn Nhất
+  </h2>
+
+  {% if top_senders %}
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 15%;">Hạng</th>
+          <th style="width: 55%;">Tên Người Gửi</th>
+          <th style="width: 30%;">Số Lời Nhắn Đã Gửi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sender, count in top_senders %}
+        <tr>
+          <td><strong>#{{ loop.index }}</strong></td>
+          <td class="author-name">{{ sender }}</td>
+          <td><span style="font-weight: bold; color: #2563eb;">{{ count }}</span> lời nhắn</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p style="color: #64748b; font-style: italic;">Chưa có dữ liệu người gửi để xếp hạng.</p>
+  {% endif %}
+
+  <!-- Biểu đồ Matplotlib -->
+  <h2 style="font-size: 1.15rem; margin: 2rem 0 0.75rem; color: #1e293b;">
+    Biểu Đồ Cột Số Lượng Lời Nhắn
+  </h2>
+  <div class="chart-container">
+    <img src="{{ url_for('static', filename='stats.png') }}?t={{ chart_timestamp }}"
+      alt="Biểu đồ thống kê số lượng lời nhắn theo người gửi">
+  </div>
+</section>
+{% endblock %}

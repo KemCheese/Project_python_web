@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Nguyễn Văn A",
+    "message": "Xin chào! Ứng dụng Guestbook rất hay và hữu ích.",
+    "created_at": "14/10/2026 09:30"
+  },
+  {
+    "id": 2,
+    "name": "Trần Thị B",
+    "message": "Chúc cả nhóm học tập và làm việc thật hiệu quả!",
+    "created_at": "14/10/2026 10:15"
+  },
+  {
+    "id": 3,
+    "name": "Nguyễn Văn A",
+    "message": "Mình quay lại để gửi thêm một lời nhắn chúc sức khỏe.",
+    "created_at": "14/10/2026 11:00"
+  },
+  {
+    "id": 4,
+    "name": "Lê Văn C",
+    "message": "Giao diện đơn giản, dễ đọc và rất dễ sử dụng.",
+    "created_at": "14/10/2026 14:20"
+  },
+  {
+    "id": 5,
+    "name": "Phạm Minh D",
+    "message": "Phần biểu đồ thống kê trực quan và nhanh chóng.",
+    "created_at": "14/10/2026 15:45"
+  },
+  {
+    "id": 6,
+    "name": "Hoàng Văn E",
+    "message": "Dữ liệu được lưu trữ tự động vào file JSON tiện lợi.",
+    "created_at": "14/10/2026 16:10"
+  }
+]

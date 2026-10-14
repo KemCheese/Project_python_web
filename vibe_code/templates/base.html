@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Sổ Lưu Bút Cộng Đồng - Vibe Chronicle{% endblock %}</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Architectural Anti-Slop Design CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  <!-- Precision Header Navigation -->
+  <header class="navbar-wrapper">
+    <div class="navbar-container">
+      <a href="{{ url_for('index') }}" class="brand-logo" id="nav-brand" aria-label="Trang chủ Sổ Lưu Bút">
+        <div class="brand-icon-box">GB</div>
+        <div class="brand-text-group">
+          <span class="brand-name">Guestbook</span>
+          <span class="brand-sub">Live Chronicle</span>
+        </div>
+      </a>
+
+      <!-- Primary Navigation Links -->
+      <nav class="nav-links" id="navLinks" aria-label="Điều hướng chính">
+        <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}"
+          id="nav-home">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+            <path d="M6 6h10" />
+            <path d="M6 10h10" />
+          </svg>
+          <span>Sổ lưu bút</span>
+        </a>
+
+        <a href="{{ url_for('add') }}" class="nav-item {% if request.endpoint == 'add' %}active{% endif %}"
+          id="nav-add">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14" />
+            <path d="M5 12h14" />
+          </svg>
+          <span>Viết lời nhắn</span>
+        </a>
+
+        <a href="{{ url_for('stats') }}" class="nav-item {% if request.endpoint == 'stats' %}active{% endif %}"
+          id="nav-stats">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18" />
+            <path d="m19 9-5 5-4-4-3 3" />
+          </svg>
+          <span>Báo cáo & Đồ thị</span>
+        </a>
+      </nav>
+
+      <!-- Utility Actions: Theme Toggle & Mobile Menu -->
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-label="Chuyển chế độ sáng/tối"
+          title="Chuyển đổi giao diện Sáng / Tối">
+          <span class="icon-sun">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </span>
+          <span class="icon-moon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </span>
+        </button>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Mở menu di động">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport Content -->
+  <main class="main-wrapper" id="mainContent">
+    <div class="content-container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Grounded Architectural Footer -->
+  <footer class="footer-wrapper">
+    <div class="footer-container">
+      <div class="footer-left">
+        <p><strong>Sổ Lưu Bút Cộng Đồng - Phiên Bản Kiến Trúc Hiện Đại</strong></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Xác Nhận Xóa Lời Nhắn -->
+  <div class="modal-overlay" id="deleteModal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="modalTitle">
+    <div class="modal-surface">
+      <div class="modal-top">
+        <div class="modal-danger-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+        </div>
+        <div class="modal-header-text">
+          <h3 id="modalTitle">Xác nhận xóa lời nhắn</h3>
+          <p>Hành động này sẽ gỡ bỏ dữ liệu vĩnh viễn khỏi hệ thống.</p>
+        </div>
+      </div>
+      <div class="modal-content-body">
+        <p>Bạn có chắc chắn muốn xóa thông điệp của <strong id="modalAuthorName">tác giả</strong>?</p>
+      </div>
+      <div class="modal-actions-bar">
+        <button type="button" class="btn btn-secondary" id="modalCancelBtn">Hủy bỏ</button>
+        <a href="#" class="btn btn-danger" id="modalConfirmDeleteBtn">Đồng ý xóa</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications Shelf -->
+  <div class="toast-shelf" id="toastShelf" aria-live="polite"></div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>
