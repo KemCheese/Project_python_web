@@ -27,3 +27,4 @@ desktop.ini
 .coverage
 htmlcov/
 .agents/
+vibe_code/docs/adr/

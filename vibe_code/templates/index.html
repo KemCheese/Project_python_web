@@ -1,63 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}Sổ Lưu Bút Trực Tuyến — Khám Phá & Chia Sẻ{% endblock %}
+{% block title %}Góc Lưu Trữ | Nền Tảng Lưu Giữ &amp; Kết Nối Lời Nhắn{% endblock %}
 
 {% block content %}
-<!-- Asymmetric Editorial Hero Section -->
+<!-- Architectural Editorial Hero Section -->
 <section class="hero-editorial">
   <div class="hero-content">
-    <div class="hero-eyebrow">
-      <span class="status-dot"></span>
-      <span>Live Community Ledger</span>
-    </div>
-
     <h1 class="hero-title">
-      Sổ Lưu Bút <span class="highlight-accent">Đích Thực</span>
+      Lưu Giữ Khoảnh Khắc <span class="highlight-accent">&amp; Kết Nối</span>
     </h1>
 
     <p class="hero-description">
-      Lưu giữ những dòng cảm nghĩ, thông điệp ý nghĩa và kỷ niệm của bạn trong không gian tương tác trực quan, thanh
-      lịch.
+      Nền tảng mở lưu giữ những góc nhìn, thông điệp và dấu ấn từ bạn bè.
     </p>
 
     <div class="hero-actions-group">
       <a href="{{ url_for('add') }}" class="btn btn-primary" id="btn-add-entry">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
-        <span>Gửi lời nhắn mới</span>
+        <span>Viết lời nhắn</span>
       </a>
 
-      <a href="{{ url_for('stats') }}" class="btn btn-outline" id="btn-view-stats">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      <a href="{{ url_for('board') }}" class="btn btn-outline" id="btn-view-board">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3v18h18" />
-          <path d="m19 9-5 5-4-4-3 3" />
+          <rect width="7" height="7" x="3" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="3" rx="1"></rect>
+          <rect width="7" height="7" x="14" y="14" rx="1"></rect>
+          <rect width="7" height="7" x="3" y="14" rx="1"></rect>
         </svg>
-        <span>Xem biểu đồ phân tích</span>
+        <span>Bảng kỷ niệm trực quan</span>
       </a>
-    </div>
-
-    <!-- Live Meta Ticker -->
-    <div class="hero-meta-ticker">
-      <div class="ticker-item">
-        <span>Tổng lưu trữ:</span>
-        <span class="ticker-value" id="tickerTotalEntries">{{ entries|length }}</span>
-      </div>
-      <div class="ticker-item">
-        <span>Cập nhật:</span>
-        <span class="ticker-value">Thời gian thực</span>
-      </div>
-      <div class="ticker-item">
-        <span>Lưu trữ:</span>
-        <span class="ticker-value">data.json</span>
-      </div>
     </div>
   </div>
 
-  <!-- Right Asymmetric Spotlight: Latest Note Pulse -->
+  <!-- Right Asymmetric Spotlight: Latest Note Card -->
   <div class="hero-spotlight-col">
     {% if entries %}
     {% set latest = entries[0] %}
@@ -65,13 +45,13 @@
       <div class="pulse-card-header">
         <div class="pulse-card-tag">
           <span class="status-dot"></span>
-          <span>Lời nhắn mới nhất</span>
+          <span>Thông điệp mới nhất</span>
         </div>
-        <span class="pulse-card-time">#{{ "%02d"|format(latest.id) }} · {{ latest.created_at or 'Vừa xong' }}</span>
+        <span class="pulse-card-time">{{ latest.created_at or 'Gần đây' }}</span>
       </div>
 
       <div class="pulse-card-quote">
-        “{{ latest.message }}”
+        &ldquo;{{ latest.message }}&rdquo;
       </div>
 
       <div class="pulse-card-author">
@@ -80,7 +60,7 @@
         </div>
         <div class="pulse-card-author-info">
           <h4>{{ latest.name }}</h4>
-          <p>Khách ghé thăm gần nhất</p>
+          <p>Người đóng góp gần nhất</p>
         </div>
       </div>
     </div>
@@ -88,18 +68,18 @@
     <div class="hero-pulse-card">
       <div class="pulse-card-header">
         <div class="pulse-card-tag">
-          <span>Chào mừng bạn</span>
+          <span>Thông Điệp</span>
         </div>
         <span class="pulse-card-time">Khởi đầu</span>
       </div>
       <div class="pulse-card-quote">
-        “Cuốn sổ lưu bút đang chờ đón thông điệp đầu tiên từ bạn!”
+        &ldquo;Hệ thống đang sẵn sàng tiếp nhận những lời nhắn đầu tiên.&rdquo;
       </div>
       <div class="pulse-card-author">
-        <div class="pulse-card-avatar">GB</div>
+        <div class="pulse-card-avatar">GT</div>
         <div class="pulse-card-author-info">
-          <h4>Vibe Chronicle</h4>
-          <p>Hệ thống sẵn sàng tiếp nhận</p>
+          <h4>Góc Lưu Trữ</h4>
+          <p>Sẵn sàng tiếp nhận lời nhắn</p>
         </div>
       </div>
     </div>
@@ -112,13 +92,14 @@
   <!-- Toolbar: Tiêu đề, Đếm, Tìm kiếm & Lọc -->
   <div class="toolbar-container">
     <div class="toolbar-heading-group">
-      <h2 class="toolbar-title">Lời Nhắn Đã Lưu</h2>
-      <span class="count-badge" id="countBadge">{{ entries|length }} ghi nhận</span>
+      <h2 class="toolbar-title">Danh Sách Lời Nhắn</h2>
+      <span class="count-badge" id="countBadge">{{ entries|length }} thông điệp</span>
     </div>
 
     <div class="toolbar-controls">
-      <!-- Sort & Filter Pills -->
-      <div class="filter-pills" role="tablist" aria-label="Bộ lọc sắp xếp">
+      <!-- Sort & Filter Pills with Sliding Glider -->
+      <div class="filter-pills" role="tablist" aria-label="Bộ lọc sắp xếp" id="filterPillsGroup">
+        <div class="filter-pill-glider" id="sortGlider"></div>
         <button type="button" class="filter-pill-btn active" data-sort="newest" id="sortNewest">Mới nhất</button>
         <button type="button" class="filter-pill-btn" data-sort="oldest" id="sortOldest">Cũ nhất</button>
       </div>
@@ -130,7 +111,7 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="searchInput" class="search-field-input" placeholder="Tìm theo tác giả hoặc nội dung..."
+        <input type="text" id="searchInput" class="search-field-input" placeholder="Tìm theo tên hoặc nội dung..."
           autocomplete="off" aria-label="Tìm kiếm lời nhắn">
         <button type="button" class="search-clear-btn" id="searchClearBtn" title="Xóa tìm kiếm"
           aria-label="Xóa nội dung tìm kiếm">
@@ -150,24 +131,15 @@
       data-message="{{ entry.message|lower }}">
       <div class="entry-card-top">
         <div class="author-lockup">
-          <!-- Avatar initials -->
-          <div class="author-avatar" data-seed="{{ entry.id }}">
+          <!-- Avatar initials with dynamic vibrant gradient -->
+          <div class="author-avatar" data-seed="{{ (entry.id % 6) + 1 }}">
             {{ entry.name[:2]|upper }}
           </div>
           <div class="author-meta">
             <h3 class="author-name">{{ entry.name }}</h3>
-            <span class="entry-date">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              <span>{{ entry.created_at or 'Gần đây' }}</span>
-            </span>
+            <span class="entry-date">{{ entry.created_at or 'Gần đây' }}</span>
           </div>
         </div>
-
-        <span class="entry-id-badge">#{{ "%02d"|format(entry.id) }}</span>
       </div>
 
       <div class="entry-card-body">
@@ -190,8 +162,8 @@
 
         <!-- Nút xóa kích hoạt modal an toàn -->
         <button type="button" class="btn-card-action btn-delete btn-delete-trigger" data-id="{{ entry.id }}"
-          data-name="{{ entry.name }}" data-delete-url="{{ url_for('delete', id=entry.id) }}" title="Xóa lời nhắn này"
-          aria-label="Xóa lời nhắn của {{ entry.name }}">
+          data-name="{{ entry.name }}" data-delete-url="{{ url_for('delete', id=entry.id) }}" title="Gỡ lời nhắn này"
+          aria-label="Gỡ lời nhắn của {{ entry.name }}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 6h18"></path>
@@ -214,10 +186,10 @@
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
     </div>
-    <h3>Không tìm thấy kết quả</h3>
-    <p>Không có lời nhắn nào khớp với từ khóa hiện tại. Hãy thử tìm theo tên tác giả hoặc nội dung khác.</p>
+    <h3>Không tìm thấy kết quả phù hợp</h3>
+    <p>Không có lời nhắn nào khớp với từ khóa tìm kiếm. Bạn có thể thử tìm theo tên người gửi hoặc từ khóa khác.</p>
     <button type="button" class="btn btn-outline" id="resetSearchBtn">
-      Xóa bộ lọc tìm kiếm
+      Xem toàn bộ danh sách
     </button>
   </div>
 
@@ -227,13 +199,14 @@
     <div class="empty-state-icon">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
       </svg>
     </div>
-    <h3>Chưa có lời nhắn nào được ghi nhận</h3>
-    <p>Hãy là người đầu tiên đặt dấu ấn cho cuốn sổ lưu bút cộng đồng này!</p>
+    <h3>Chưa có lời nhắn nào</h3>
+    <p>Hãy là người đầu tiên chia sẻ thông điệp lên hệ thống lưu trữ.</p>
     <a href="{{ url_for('add') }}" class="btn btn-primary">
-      Viết lời nhắn đầu tiên
+      Tạo lời nhắn đầu tiên
     </a>
   </div>
   {% endif %}

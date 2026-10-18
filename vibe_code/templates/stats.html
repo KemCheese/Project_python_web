@@ -1,151 +1,244 @@
 {% extends "base.html" %}
 
-{% block title %}Báo Cáo Thống Kê & Phân Tích Đồ Thị — Guestbook Chronicle{% endblock %}
+{% block title %}Thống Kê & Phân Tích | Góc Lưu Trữ{% endblock %}
 
 {% block content %}
-<div class="stats-dashboard-wrapper">
-  <!-- Masthead Header -->
-  <div class="stats-masthead">
-    <div class="stats-title-group">
-      <h1>Báo Cáo Phân Tích &amp; Thống Kê</h1>
-      <p>Tổng hợp chỉ số tương tác thời gian thực được kết xuất từ <code>data.json</code>.</p>
+<div class="stats-dashboard-layout">
+  <!-- Minimalist Header & Actions Bar -->
+  <header class="stats-header-bar">
+    <div class="stats-header-info">
+      <div class="stats-headline-row">
+        <h1 class="stats-headline">Thống Kê Hoạt Động</h1>
+      </div>
+      <p class="stats-subtitle">Tổng hợp chỉ số đóng góp và tần suất lưu trữ lời nhắn của cộng đồng</p>
     </div>
 
-    <div class="hero-actions-group">
-      <a href="{{ url_for('index') }}" class="btn btn-outline">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        <span>Về sổ lưu bút</span>
-      </a>
-      <a href="{{ url_for('stats') }}" class="btn btn-primary" title="Cập nhật lại số liệu và biểu đồ">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <div class="stats-header-actions">
+      <a href="{{ url_for('stats') }}" class="btn btn-outline" id="refreshStatsBtn" title="Làm mới chỉ số">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="23 4 23 10 17 10"></polyline>
           <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
         </svg>
-        <span>Làm mới biểu đồ</span>
+        <span>Làm mới</span>
+      </a>
+      <a href="{{ url_for('board') }}" class="btn btn-primary" id="viewBoardBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+          <line x1="9" y1="21" x2="9" y2="9"></line>
+        </svg>
+        <span>Bảng Ghi Nhớ</span>
       </a>
     </div>
-  </div>
+  </header>
 
-  <!-- 3 Thẻ Metric KPI Bento Row -->
-  <div class="kpi-bento-grid">
-    <div class="kpi-card">
-      <div class="kpi-icon-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-      </div>
-      <div class="kpi-info-block">
-        <span class="kpi-label">Tổng số lời nhắn</span>
-        <div class="kpi-metric-number">{{ total_entries }}</div>
-        <span class="kpi-caption">Được lưu trữ bền vững</span>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-icon-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-      </div>
-      <div class="kpi-info-block">
-        <span class="kpi-label">Số tác giả ghé thăm</span>
-        <div class="kpi-metric-number">{{ unique_authors }}</div>
-        <span class="kpi-caption">Người gửi khác nhau</span>
-      </div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-icon-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8" r="7"></circle>
-          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-        </svg>
-      </div>
-      <div class="kpi-info-block">
-        <span class="kpi-label">Đóng góp tích cực nhất</span>
-        <div class="kpi-metric-number" style="font-size: clamp(1.3rem, 1.8vw, 1.7rem);">{{ top_contributor }}</div>
-        <span class="kpi-caption">Dẫn đầu bảng xếp hạng</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Analytics Split: Leaderboard & Matplotlib Chart -->
-  <div class="analytics-bento-layout">
-    <!-- Cột Leaderboard Top 5 -->
-    <div class="bento-card">
-      <div class="bento-card-header">
-        <div class="bento-title-group">
-          <h3>Top 5 Người Gửi Nhiều Nhất</h3>
-          <p>Xếp hạng tần suất dựa trên họ tên người gửi</p>
+  <!-- 4-Card Bento Metric Grid -->
+  <section class="stats-bento-metrics" aria-label="Các chỉ số chính">
+    <!-- Card 1: Tổng Lời Nhắn -->
+    <div class="bento-metric-card card-cyan">
+      <div class="metric-card-top">
+        <span class="metric-label">Tổng lời nhắn</span>
+        <div class="metric-icon-box cyan-glow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
         </div>
-        <span class="bento-badge">BXH</span>
+      </div>
+      <div class="metric-number-display">{{ total_entries }}</div>
+      <div class="metric-footnote">Đã lưu trữ an toàn</div>
+    </div>
+
+    <!-- Card 2: Người Đóng Góp -->
+    <div class="bento-metric-card card-violet">
+      <div class="metric-card-top">
+        <span class="metric-label">Người đóng góp</span>
+        <div class="metric-icon-box violet-glow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="metric-number-display">{{ unique_authors }}</div>
+      <div class="metric-footnote">Tác giả duy nhất</div>
+    </div>
+
+    <!-- Card 3: Đóng Góp Nhiều Nhất -->
+    <div class="bento-metric-card card-rose">
+      <div class="metric-card-top">
+        <span class="metric-label">Đóng góp hàng đầu</span>
+        <div class="metric-icon-box rose-glow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+      </div>
+      <div class="metric-number-display author-truncate" title="{{ top_contributor }}">{{ top_contributor }}</div>
+      <div class="metric-footnote">{{ top_senders[0][1] if top_senders else 0 }} lời nhắn chia sẻ</div>
+    </div>
+
+    <!-- Card 4: Tần Suất Trung Bình -->
+    <div class="bento-metric-card card-amber">
+      <div class="metric-card-top">
+        <span class="metric-label">Mật độ tương tác</span>
+        <div class="metric-icon-box amber-glow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="metric-number-display">{{ avg_per_author }}</div>
+      <div class="metric-footnote">Trung bình lời nhắn / người</div>
+    </div>
+  </section>
+
+  <!-- Main Asymmetric Bento: Chart & Leaderboard Side-by-Side -->
+  <div class="stats-main-grid">
+    <!-- Cột Trái: Khung Biểu Đồ Trực Quan -->
+    <section class="dashboard-card chart-panel-card">
+      <div class="panel-card-header">
+        <div class="panel-header-titles">
+          <h2 class="panel-card-title">Phân Bố Số Lượng Lời Nhắn</h2>
+          <p class="panel-card-caption">Trực quan hóa khối lượng thông điệp của những tác giả tích cực</p>
+        </div>
+        <div class="panel-badge-pill">Trực quan 200 DPI</div>
       </div>
 
-      <div class="bento-card-body">
-        {% if top_senders %}
-          <div class="leaderboard-items-list">
-            {% for sender, count in top_senders %}
-              {% set rank = loop.index %}
-              <div class="leaderboard-row">
-                <div class="rank-marker {% if rank == 1 %}gold{% elif rank == 2 %}silver{% elif rank == 3 %}bronze{% endif %}">
-                  {% if rank == 1 %}1{% elif rank == 2 %}2{% elif rank == 3 %}3{% else %}{{ rank }}{% endif %}
+      <div class="chart-stage-container">
+        <img src="{{ url_for('static', filename='stats.png') }}?v={{ total_entries }}" 
+             alt="Biểu đồ phân bố số lượng lời nhắn theo người gửi"
+             class="chart-img-rendered"
+             id="chartImage">
+      </div>
+
+
+    </section>
+
+    <!-- Cột Phải: Bảng Vinh Danh Top 3 (Bục Đứng Olympic) -->
+    {% if top_senders %}
+    <section class="dashboard-card leaderboard-panel-card" aria-label="Bảng vinh danh top 3 tác giả">
+      <div class="panel-card-header">
+        <div class="panel-header-titles">
+          <h2 class="panel-card-title">Bảng Vinh Danh</h2>
+          <p class="panel-card-caption">Bục vinh quang 3 tác giả đóng góp tích cực nhất</p>
+        </div>
+        <div class="panel-badge-pill badge-gold">Top 3</div>
+      </div>
+
+      {% set top_three = top_senders[:3] %}
+      {% set rank1 = top_three[0] if top_three|length > 0 else none %}
+      {% set rank2 = top_three[1] if top_three|length > 1 else none %}
+      {% set rank3 = top_three[2] if top_three|length > 2 else none %}
+      {% set share1 = (rank1[1] / total_entries * 100)|round(1) if total_entries > 0 and rank1 else 0 %}
+      {% set share2 = (rank2[1] / total_entries * 100)|round(1) if total_entries > 0 and rank2 else 0 %}
+      {% set share3 = (rank3[1] / total_entries * 100)|round(1) if total_entries > 0 and rank3 else 0 %}
+
+      <div class="olympic-podium-wrapper">
+        <div class="olympic-podium-stage">
+          <!-- Bục 2: BẠC (Bên trái) -->
+          {% if rank2 %}
+          <div class="podium-pillar pillar-silver">
+            <div class="pillar-athlete">
+              <div class="pillar-avatar-wrap">
+                <div class="pillar-avatar avatar-silver">
+                  {{ rank2[0][:2]|upper }}
                 </div>
-
-                <div class="leaderboard-author-col">
-                  <div class="leaderboard-header-line">
-                    <span class="leaderboard-name">{{ sender }}</span>
-                    <span class="leaderboard-count-pill">{{ count }} lời nhắn</span>
-                  </div>
-
-                  <!-- Thanh tỉ lệ trực quan -->
-                  <div class="progress-track">
-                    <div class="progress-fill" style="width: {{ (count / total_entries * 100)|round(1) }}%;"></div>
-                  </div>
-                </div>
-
-                <div class="leaderboard-percent">
-                  {{ (count / total_entries * 100)|round(1) }}%
+                <div class="pillar-medal-icon medal-silver-badge" title="Huy chương Bạc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                    <circle cx="12" cy="8" r="6"></circle>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                  </svg>
                 </div>
               </div>
-            {% endfor %}
-          </div>
-        {% else %}
-          <div class="empty-state-panel" style="padding: 2rem 1rem;">
-            <p>Chưa có dữ liệu tác giả để xếp hạng.</p>
-          </div>
-        {% endif %}
-      </div>
-    </div>
 
-    <!-- Cột Biểu Đồ Cột Matplotlib -->
-    <div class="bento-card">
-      <div class="bento-card-header">
-        <div class="bento-title-group">
-          <h3>Biểu Đồ Cột Matplotlib</h3>
-          <p>Tệp ảnh sinh tự động: <code>static/stats.png</code></p>
-        </div>
-        <span class="bento-badge">200 DPI</span>
-      </div>
+              <div class="pillar-meta">
+                <span class="pillar-name" title="{{ rank2[0] }}">{{ rank2[0] }}</span>
+                <span class="pillar-score"><strong>{{ rank2[1] }}</strong> lời nhắn</span>
+              </div>
+            </div>
 
-      <div class="bento-card-body">
-        <div class="chart-viewport-box">
-          <img src="{{ url_for('static', filename='stats.png') }}?v={{ total_entries }}" 
-               alt="Biểu đồ cột thống kê tần suất người gửi lời nhắn" 
-               class="chart-rendered-img"
-               id="chartImage">
+            <!-- Khối bục đứng số 2 -->
+            <div class="podium-step step-silver">
+              <div class="step-top-glow"></div>
+              <div class="step-number">2</div>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Bục 1: VÀNG (Ở giữa - Cao nhất) -->
+          {% if rank1 %}
+          <div class="podium-pillar pillar-gold">
+            <div class="pillar-athlete">
+              <div class="pillar-crown-icon" aria-hidden="true" title="Vương miện Quán Quân">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+
+              <div class="pillar-avatar-wrap">
+                <div class="pillar-avatar avatar-gold">
+                  {{ rank1[0][:2]|upper }}
+                </div>
+                <div class="pillar-medal-icon medal-gold-badge" title="Huy chương Vàng">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <circle cx="12" cy="8" r="6"></circle>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="pillar-meta">
+                <span class="pillar-name gold-name" title="{{ rank1[0] }}">{{ rank1[0] }}</span>
+                <span class="pillar-score gold-score"><strong>{{ rank1[1] }}</strong> lời nhắn</span>
+              </div>
+            </div>
+
+            <!-- Khối bục đứng số 1 -->
+            <div class="podium-step step-gold">
+              <div class="step-top-glow"></div>
+              <div class="step-number">1</div>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Bục 3: ĐỒNG (Bên phải) -->
+          {% if rank3 %}
+          <div class="podium-pillar pillar-bronze">
+            <div class="pillar-athlete">
+              <div class="pillar-avatar-wrap">
+                <div class="pillar-avatar avatar-bronze">
+                  {{ rank3[0][:2]|upper }}
+                </div>
+                <div class="pillar-medal-icon medal-bronze-badge" title="Huy chương Đồng">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                    <circle cx="12" cy="8" r="6"></circle>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="pillar-meta">
+                <span class="pillar-name" title="{{ rank3[0] }}">{{ rank3[0] }}</span>
+                <span class="pillar-score"><strong>{{ rank3[1] }}</strong> lời nhắn</span>
+              </div>
+            </div>
+
+            <!-- Khối bục đứng số 3 -->
+            <div class="podium-step step-bronze">
+              <div class="step-top-glow"></div>
+              <div class="step-number">3</div>
+            </div>
+          </div>
+          {% endif %}
         </div>
-        <div class="chart-meta-caption">
-          <span>Khung nhìn tối ưu cho phân tích</span>
-          <span>Tự động cập nhật khi có lời nhắn mới</span>
-        </div>
+
+        <!-- Bệ đế Olympic chân bục -->
+        <div class="podium-pedestal-base"></div>
       </div>
-    </div>
+    </section>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

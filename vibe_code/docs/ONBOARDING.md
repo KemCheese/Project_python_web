@@ -10,8 +10,9 @@
 **Vibe Code Guestbook** là ứng dụng web sổ lưu bút hoàn chỉnh, được phát triển với tiêu chuẩn chất lượng cao về kiến trúc backend lẫn thẩm mỹ giao diện frontend. Ứng dụng cung cấp giải pháp ghi nhận, quản lý và phân tích trực quan các thông điệp từ khách ghé thăm với những điểm nổi bật:
 
 * 💬 **Trải nghiệm lưu bút mượt mà:** Khách có thể đọc các lời nhắn hiển thị theo dạng thẻ trực quan (Card layout), thêm lời nhắn mới với cơ chế xác thực dữ liệu ngay tại giao diện.
+* 🖼️ **Không gian trực quan (Visual Board):** Bảng ghi nhớ hoài niệm tự do (`/board`) với các bức ảnh Polaroid và băng keo Washi thủ công, hỗ trợ Focus Mode phóng to mượt mà ra giữa màn hình.
 * 🛡️ **Quản lý an toàn & Thân thiện:** Thao tác xóa lời nhắn được bảo vệ bằng hộp thoại xác nhận (Modal) phong cách Glassmorphism, tránh xóa nhầm dữ liệu.
-* 📊 **Trung tâm phân tích & Biểu đồ trực quan:** Trang Dashboard thống kê tự động tổng hợp số liệu (tổng lời nhắn, số tác giả, người đóng góp tích cực nhất) và vẽ biểu đồ cột trực quan bằng **Matplotlib** với bảng màu hiện đại.
+* 📊 **Trung tâm phân tích & Bục Olympic:** Trang Dashboard thống kê tự động tổng hợp số liệu, vẽ biểu đồ cột trực quan 200 DPI bằng **Matplotlib** và vinh danh tác giả trên **Bục Đứng Olympic Top 3** chuẩn quốc tế.
 * 💾 **Lưu trữ dữ liệu bền vững (Persistent Storage):** Toàn bộ dữ liệu được lưu trữ an toàn trong file JSON có cấu trúc (`data.json`), tự động nạp khi ứng dụng khởi chạy và đồng bộ ngay lập tức sau mỗi thao tác thêm/xóa.
 
 ---
@@ -36,6 +37,7 @@ vibe_code/
 │       ├── README.md           # Mục lục danh sách quyết định
 │       ├── ADR-0001-chon-flask-lam-web-framework.md
 │       ├── ADR-0002-kien-truc-giao-dien-design-system.md
+│       ├── ADR-0002-zero-flash-light-mode-and-youthful-design.md
 │       └── ADR-0003-chien-luoc-luu-tru-du-lieu-va-tu-van-mysql.md
 │
 ├── static/                     # Tài nguyên tĩnh của ứng dụng
@@ -48,8 +50,9 @@ vibe_code/
 └── templates/                  # Hệ thống giao diện Jinja2 Templates kế thừa
     ├── base.html               # Layout gốc chứa Header, Navigation, Footer & Modal toàn cục
     ├── index.html              # Trang chủ hiển thị danh sách lời nhắn dạng Card
+    ├── board.html              # Bảng ghi nhớ hoài niệm tự do (Polaroid & Focus Mode)
     ├── add.html                # Form nhập lời nhắn mới với cơ chế báo lỗi trực quan
-    └── stats.html              # Dashboard báo cáo thống kê & hiển thị biểu đồ phân tích
+    └── stats.html              # Dashboard báo cáo thống kê & Bục đứng Olympic Top 3
 ```
 
 ---

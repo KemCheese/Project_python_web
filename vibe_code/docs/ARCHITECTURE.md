@@ -11,19 +11,19 @@ graph TD
     User["👤 Người Dùng (Trình duyệt Web)"]
     
     subgraph Controller_Flask["Bộ Điều Khiển (Flask Application Controller)"]
-        Routes["Routing Handler<br/>('/', '/add', '/delete/<id>', '/stats')"]
+        Routes["Routing Handler<br/>('/', '/board', '/add', '/delete/<id>', '/stats')"]
         Validation["Xác Thực Dữ Liệu Server-Side<br/>(Kiểm tra Name & Message hợp lệ)"]
-        MatplotlibService["Dịch Vụ Phân Tích & Vẽ Biểu Đồ<br/>(Matplotlib Agg Engine - Indigo Palette)"]
+        MatplotlibService["Dịch Vụ Phân Tích & Vẽ Biểu Đồ<br/>(Matplotlib Agg Engine - Vibrant Gradient 200 DPI)"]
     end
     
     subgraph Model_Persistence["Tầng Dữ Liệu Bền Vững (Persistence Layer)"]
-        DataJSON[("📁 data.json<br/>Lưu trữ JSON bền vững")]
+        DataJSON[("📁 data.json<br/>Lưu trữ JSON bền vững (114+ entries)")]
         StorageOps["Bộ Thao Tác Dữ Liệu<br/>(load_entries / save_entries / auto_id)"]
     end
 
     subgraph View_Jinja2["Tầng Trình Diễn (Jinja2 Templates & Static Assets)"]
-        BaseLayout["Layout Gốc: base.html<br/>(Navbar, Brand, Global Modal, Footer)"]
-        Templates["Các Giao Diện Con<br/>(index.html, add.html, stats.html)"]
+        BaseLayout["Layout Gốc: base.html<br/>(Navbar, Brand, Theme Toggle, Delete Modal, Footer)"]
+        Templates["Các Giao Diện Con<br/>(index.html, board.html, add.html, stats.html)"]
         StaticAssets["Tài Nguyên Tĩnh Hiện Đại<br/>(style.css, main.js, stats.png)"]
     end
 
@@ -32,7 +32,7 @@ graph TD
     Validation -->|Dữ liệu hợp lệ| StorageOps
     StorageOps <-->|Đọc / Ghi đồng bộ| DataJSON
     Routes -->|Kích hoạt vẽ biểu đồ| MatplotlibService
-    MatplotlibService -->|Tạo & Xuất file ảnh| StaticAssets
+    MatplotlibService -->|Tạo & Xuất file ảnh 200 DPI| StaticAssets
     Routes -->|Truyền ViewModel| Templates
     Templates -.->|Kế thừa| BaseLayout
     BaseLayout -->|Render HTML Response hoàn chỉnh| User
@@ -139,9 +139,9 @@ sequenceDiagram
 
 ---
 
-### 2.4. Luồng Báo Cáo Thống Kê & Sinh Biểu Đồ (`GET /stats`)
+### 2.4. Luồng Báo Cáo Thống Kê & Bục Đứng Olympic (`GET /stats`)
 
-Ứng dụng tích hợp dịch vụ vẽ đồ thị động Matplotlib chạy ở chế độ nền (headless mode):
+Ứng dụng tích hợp dịch vụ vẽ đồ thị động Matplotlib chạy ở chế độ nền (headless mode) cùng Bục đứng vinh danh Olympic Top 3:
 
 ```mermaid
 sequenceDiagram
@@ -155,22 +155,52 @@ sequenceDiagram
 
     User->>Route: GET /stats
     Route->>Storage: load_entries()
-    Storage-->>Route: Danh sách toàn bộ entries
+    Storage-->>Route: Danh sách toàn bộ entries (114+ lời nhắn)
     
     Route->>Route: Tính tổng số tin nhắn: len(entries)
-    Route->>Route: Thống kê tần suất theo 'name' bằng collections.Counter
-    Route->>Route: Trích xuất Top 5 tác giả gửi nhiều lời nhắn nhất
-    Route->>Route: Tính số tác giả độc nhất (unique_authors)
+    Route->>Route: Chuẩn hóa khoảng trắng & Đếm tần suất bằng Counter
+    Route->>Route: Trích xuất Top 5 tác giả cho biểu đồ & Top 3 cho Bục Olympic
+    Route->>Route: Tính số tác giả độc nhất & Mật độ tương tác trung bình
     
     Route->>PlotService: generate_stats_chart(top_senders)
-    PlotService->>PlotService: Khởi tạo figure tỉ lệ 16:9 với dpi=150
-    PlotService->>PlotService: Áp dụng bảng màu Gradient Indigo-Violet
+    PlotService->>PlotService: Khởi tạo figure tỉ lệ 16:9 với dpi=200
+    PlotService->>PlotService: Áp dụng bảng màu Vibrant Gradient (Cyan, Violet, Rose, Mint, Amber)
     PlotService->>PlotService: Tùy biến nhãn trục, lưới ngang mờ, annotate số lượng
     PlotService->>StaticFS: Lưu file ảnh chất lượng cao vào static/stats.png
     PlotService->>PlotService: Giải phóng bộ nhớ đồ họa (plt.close(fig))
     
     Route->>View: render_template('stats.html', metrics, chart_url)
-    View-->>User: Hiển thị Dashboard chỉ số KPI + Bảng xếp hạng + Biểu đồ trực quan
+    View-->>User: Hiển thị 4 thẻ Bento KPI + Khung biểu đồ 200 DPI + Bục Đứng Olympic Top 3 (2 - 1 - 3)
+```
+
+---
+
+### 2.5. Luồng Không Gian Trực Quan & Focus Mode (`GET /board`)
+
+Không gian bảng ghi nhớ tự do hoài niệm đưa người dùng vào trải nghiệm lưu giữ ký ức cảm xúc:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Người dùng
+    participant Route as Flask Route (/board)
+    participant Storage as Storage Layer (load_entries)
+    participant View as board.html
+    participant JS as main.js (Focus Modal Controller)
+
+    User->>Route: GET /board
+    Route->>Storage: load_entries()
+    Storage-->>Route: Danh sách entries
+    Route->>View: render_template('board.html', entries=entries)
+    View-->>User: Hiển thị Canvas thẻ Polaroid tự do (ngẫu hứng xoay góc & dán băng washi)
+    
+    opt Người dùng bấm chọn 1 thẻ ghi chú bất kỳ
+        User->>JS: Bấm click hoặc phím Enter trên thẻ
+        JS->>JS: Tính toán tọa độ thẻ nguồn (BoundingRect)
+        JS->>JS: Mở Focus Modal với animation scale-up mượt mà ra giữa màn hình
+        User->>JS: Bấm Esc hoặc nút Đóng
+        JS->>JS: Thu hồi Modal mượt mà trở lại vị trí gốc
+    end
 ```
 
 ---

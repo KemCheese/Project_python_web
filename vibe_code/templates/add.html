@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Viết Lời Nhắn Mới - Sổ Lưu Bút Cộng Đồng{% endblock %}
+{% block title %}Gửi Lời Nhắn Mới | Góc Lưu Trữ{% endblock %}
 
 {% block content %}
 <div class="form-page-layout">
-  <div class="form-card">
+  <div class="form-card capsule-form-card">
     <!-- Back to Index Navigation -->
     <a href="{{ url_for('index') }}" class="back-link-nav">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -12,12 +12,16 @@
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
-      <span>Quay về danh sách lời nhắn</span>
+      <span>Về danh sách lời nhắn</span>
     </a>
 
     <div class="form-header-block">
+      <div class="form-header-badge">
+        <span class="badge-dot"></span>
+        <span>TẠO LỜI NHẮN</span>
+      </div>
       <h2>Gửi Lời Nhắn Mới</h2>
-      <p>Mỗi chia sẻ của bạn là một mảnh ghép quý giá cho cuốn sổ lưu bút chung.</p>
+      <p>Chia sẻ góc nhìn, suy nghĩ hoặc thông điệp của bạn lên hệ thống lưu trữ.</p>
     </div>
 
     <!-- Validation Error Alert (Accessible & High Contrast) -->
@@ -32,7 +36,7 @@
         </svg>
       </div>
       <div class="alert-content">
-        <strong>Lỗi xác thực dữ liệu:</strong> {{ error }}
+        <strong>Chưa thể lưu lời nhắn:</strong> {{ error }}
       </div>
     </div>
     {% endif %}
@@ -42,7 +46,7 @@
       <!-- Field: Author Name -->
       <div class="field-group">
         <label for="nameInput" class="field-label">
-          <span>Họ và tên của bạn</span>
+          <span>Họ và tên hoặc biệt danh</span>
           <span class="field-required" aria-hidden="true">*</span>
         </label>
         <div class="field-input-wrapper">
@@ -53,11 +57,11 @@
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </span>
-          <input type="text" id="nameInput" name="name" class="form-input-element" placeholder="Ví dụ: Nguyễn Minh Tuấn"
+          <input type="text" id="nameInput" name="name" class="form-input-element" placeholder="Ví dụ: Minh Tuấn, Phương Thảo..."
             value="{{ name or '' }}" maxlength="100" autocomplete="name" required aria-required="true">
         </div>
         <div class="field-sub-info">
-          <span class="field-hint">Tên sẽ hiển thị công khai trên danh sách lời nhắn.</span>
+          <span class="field-hint">Tên tác giả sẽ hiển thị cùng thông điệp.</span>
         </div>
       </div>
 
@@ -69,7 +73,7 @@
         </label>
         <div class="field-input-wrapper">
           <textarea id="messageInput" name="message" class="form-input-element form-textarea-element"
-            placeholder="Hãy viết cảm nghĩ, chia sẻ hoặc lời chúc tốt đẹp của bạn..." maxlength="500" required
+            placeholder="Nhập nội dung bạn muốn chia sẻ và lưu lại..." maxlength="500" required
             aria-required="true">{{ message or '' }}</textarea>
         </div>
         <div class="field-sub-info">
@@ -87,7 +91,7 @@
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
-          <span>Gửi lời nhắn ngay</span>
+          <span>Gửi lời nhắn</span>
         </button>
       </div>
     </form>

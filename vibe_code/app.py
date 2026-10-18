@@ -39,65 +39,73 @@ def save_entries(entries):
 
 def generate_stats_chart(top_senders):
     """
-    Tạo biểu đồ cột bằng Matplotlib và lưu vào static/stats.png.
-    Thiết kế hiện đại, tinh tế theo phong cách Swiss/Neo-Editorial (Cobalt & Slate palette).
+    Tạo biểu đồ phân bố số lượng lời nhắn và lưu vào static/stats.png.
+    Thiết kế theo phong cách Youthful Gradient:
+    - Nền trong suốt (Transparent) hòa quyện hoàn hảo cả Dark Mode và Light Mode.
+    - Bảng màu Gradient cao cấp: Electric Sky, Vivid Indigo, Luminous Rose, Mint Emerald, Warm Amber.
+    - Cột cân đối, chữ sắc nét, độ phân giải cao (200 DPI).
     """
-    # Kích thước biểu đồ chuẩn tỉ lệ 16:9 với DPI cao (200) cho màn hình Retina/4K
-    fig, ax = plt.subplots(figsize=(8, 4.5), dpi=200)
+    fig, ax = plt.subplots(figsize=(8.2, 4.0), dpi=200)
+    
+    # Nền trong suốt, không bị viền trắng thô kệch
+    fig.patch.set_facecolor('none')
+    ax.set_facecolor('none')
     
     if not top_senders:
-        # Nếu chưa có dữ liệu
-        ax.text(0.5, 0.5, 'Chưa có dữ liệu để vẽ biểu đồ', 
+        ax.text(0.5, 0.5, 'Chưa có đủ dữ liệu để kết xuất biểu đồ', 
                 horizontalalignment='center', verticalalignment='center',
-                fontsize=13, color='#64748b', fontfamily='sans-serif')
+                fontsize=12, color='#94a3b8', fontfamily='sans-serif', fontweight='500')
         ax.set_axis_off()
     else:
         names = [item[0] for item in top_senders]
         counts = [item[1] for item in top_senders]
 
-        # Bảng màu Cobalt & Slate tinh tế, cao cấp (không dùng tím AI slop)
-        colors = ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe'][:len(names)]
+        # Bảng màu Vibrant Gradient trẻ trung, tương thích cả nền tối và sáng
+        palette = ['#38bdf8', '#818cf8', '#f43f5e', '#34d399', '#fbbf24']
+        colors = palette[:len(names)]
         
-        # Vẽ biểu đồ cột bo tròn nhẹ
-        bars = ax.bar(names, counts, color=colors, width=0.52, edgecolor='#1d4ed8', linewidth=1.2, zorder=3)
+        # Vẽ biểu đồ cột hiện đại
+        bars = ax.bar(names, counts, color=colors, width=0.44, zorder=3, edgecolor='none')
         
-        # Hiển thị nhãn số lượng trên đầu mỗi cột
+        # Nhãn số lượng trên đầu mỗi cột
         for bar in bars:
             height = bar.get_height()
             ax.annotate(f'{int(height)}',
                         xy=(bar.get_x() + bar.get_width() / 2, height),
-                        xytext=(0, 6),
+                        xytext=(0, 7),
                         textcoords="offset points",
                         ha='center', va='bottom',
-                        fontsize=11, fontweight='bold', color='#1e293b',
+                        fontsize=11.5, fontweight='700', color='#38bdf8',
                         fontfamily='sans-serif')
 
-        # Tùy biến trục & tiêu đề
-        ax.set_title('Top 5 Người Để Lại Lời Nhắn Nhiều Nhất', fontsize=13, fontweight='bold', pad=18, color='#0f172a', fontfamily='sans-serif')
-        ax.set_xlabel('Người gửi', fontsize=10, fontweight='bold', labelpad=10, color='#475569', fontfamily='sans-serif')
-        ax.set_ylabel('Số lượng lời nhắn', fontsize=10, fontweight='bold', labelpad=10, color='#475569', fontfamily='sans-serif')
+        # Tiêu đề và nhãn trục
+        ax.set_title('Phân bố số lượng lời nhắn theo tác giả', fontsize=12.5, fontweight='700', pad=18, color='#94a3b8', fontfamily='sans-serif')
+        ax.set_xlabel('Tác giả', fontsize=10, fontweight='600', labelpad=10, color='#94a3b8', fontfamily='sans-serif')
+        ax.set_ylabel('Số lời nhắn', fontsize=10, fontweight='600', labelpad=10, color='#94a3b8', fontfamily='sans-serif')
         
         # Lưới ngang nhẹ nhàng
-        ax.grid(axis='y', linestyle='--', alpha=0.25, color='#94a3b8', zorder=0)
+        ax.grid(axis='y', linestyle='--', linewidth=0.75, alpha=0.3, color='#94a3b8', zorder=0)
         ax.set_axisbelow(True)
         
-        # Đảm bảo trục y là số nguyên
+        # Trục Y nguyên số
         max_count = max(counts) if counts else 1
         ax.set_yticks(range(0, max_count + 2))
-        ax.set_ylim(0, max_count + 1)
+        ax.set_ylim(0, max_count + 1.2)
 
-        # Xóa viền trên và phải
+        # Viền tối giản thanh thoát
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-        ax.spines['left'].set_color('#cbd5e1')
-        ax.spines['bottom'].set_color('#cbd5e1')
+        ax.spines['left'].set_color('#64748b')
+        ax.spines['left'].set_alpha(0.35)
+        ax.spines['bottom'].set_color('#64748b')
+        ax.spines['bottom'].set_alpha(0.35)
 
-        # Nhãn trục X
-        plt.xticks(rotation=15, ha='right', fontsize=9.5, color='#334155', fontfamily='sans-serif')
-        plt.yticks(fontsize=9.5, color='#475569', fontfamily='sans-serif')
+        # Định dạng nhãn trục
+        plt.xticks(rotation=0, ha='center', fontsize=9.5, color='#94a3b8', fontfamily='sans-serif', fontweight='600')
+        plt.yticks(fontsize=9.5, color='#94a3b8', fontfamily='sans-serif')
 
     plt.tight_layout()
-    plt.savefig(STATS_IMAGE, transparent=True, bbox_inches='tight')
+    plt.savefig(STATS_IMAGE, transparent=True, edgecolor='none', bbox_inches='tight')
     plt.close(fig)
 
 
@@ -112,6 +120,18 @@ def index():
     # Sắp xếp hiển thị lời nhắn mới nhất lên đầu (theo id giảm dần)
     sorted_entries = sorted(entries, key=lambda x: x.get('id', 0), reverse=True)
     return render_template('index.html', entries=sorted_entries)
+
+
+@app.route('/board')
+def board():
+    """
+    Route /board (GET):
+    Trang Bảng Ghim Kỷ Niệm (Corkboard Memory Pinboard):
+    Hiển thị toàn bộ ghi chú dưới dạng bảng ghim bần nghệ thuật với đinh ghim,
+    băng dính washi tape, hiệu ứng nổi bồng bềnh khi di chuột và layer phóng to khi chọn.
+    """
+    entries = load_entries()
+    return render_template('board.html', entries=entries)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -179,14 +199,21 @@ def stats():
     """
     Route /stats (GET):
     - Tổng số lời nhắn đã ghi.
-    - Danh sách 5 người gửi nhiều lời nhắn nhất (tính theo name).
+    - Danh sách 5 người gửi nhiều lời nhắn nhất (tính theo name đã chuẩn hóa khoảng trắng).
     - Biểu đồ cột bằng Matplotlib lưu tạm thành file PNG nhúng vào template.
     """
     entries = load_entries()
     total_entries = len(entries)
 
-    # Thống kê top 5 người gửi nhiều nhất theo 'name'
-    sender_counts = Counter(e.get('name', 'Ẩn danh').strip() for e in entries if e.get('name'))
+    # Chuẩn hóa khoảng trắng tên tác giả để thống kê chuẩn xác
+    clean_names = []
+    for e in entries:
+        raw_name = e.get('name', '').strip()
+        if raw_name:
+            norm_name = ' '.join(raw_name.split())
+            clean_names.append(norm_name)
+
+    sender_counts = Counter(clean_names)
     top_senders = sender_counts.most_common(5)
 
     # Vẽ và lưu biểu đồ ra static/stats.png
@@ -194,13 +221,15 @@ def stats():
 
     unique_authors = len(sender_counts)
     top_contributor = top_senders[0][0] if top_senders else "Chưa có"
+    avg_per_author = round(total_entries / unique_authors, 1) if unique_authors > 0 else 0
 
     return render_template('stats.html',
                            entries=entries,
                            total_entries=total_entries,
                            top_senders=top_senders,
                            unique_authors=unique_authors,
-                           top_contributor=top_contributor)
+                           top_contributor=top_contributor,
+                           avg_per_author=avg_per_author)
 
 
 if __name__ == '__main__':

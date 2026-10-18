@@ -10,4 +10,6 @@ Các Architecture Decision Records (ADR) ghi lại những quyết định kỹ 
 | :--- | :--- | :---: | :---: |
 | [ADR-0001](file:///d:/lam%20viec/FORK/Project_python_web/vibe_code/docs/adr/ADR-0001-chon-flask-lam-web-framework.md) | Chọn Flask làm Web Framework chính thức | ĐÃ CHẤP NHẬN | 2026-10-14 |
 | [ADR-0002](file:///d:/lam%20viec/FORK/Project_python_web/vibe_code/docs/adr/ADR-0002-kien-truc-giao-dien-design-system.md) | Xây dựng hệ thống giao diện Design System Tokens & Glassmorphism | ĐÃ CHẤP NHẬN | 2026-10-14 |
+| [ADR-0002-b](file:///d:/lam%20viec/FORK/Project_python_web/vibe_code/docs/adr/ADR-0002-zero-flash-light-mode-and-youthful-design.md) | Kiến Trúc Chống FOUC (Zero-Flash) & Ngôn Ngữ Ký Ức Thanh Xuân | ĐÃ CHẤP NHẬN | 2026-10-18 |
 | [ADR-0003](file:///d:/lam%20viec/FORK/Project_python_web/vibe_code/docs/adr/ADR-0003-chien-luoc-luu-tru-du-lieu-va-tu-van-mysql.md) | Lưu trữ bền vững với JSON File & Thiết kế mở rộng MySQL | ĐÃ CHẤP NHẬN | 2026-10-14 |
+| [ADR-0004](file:///d:/lam%20viec/FORK/Project_python_web/vibe_code/docs/adr/ADR-0004-buc-vinh-danh-olympic-va-anti-slop-ui.md) | Thiết Kế Bục Đứng Vinh Danh Olympic Top 3 & Tối Ưu Hóa Giao Diện Tinh Giản | ĐÃ CHẤP NHẬN | 2026-10-18 |
